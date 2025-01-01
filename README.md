@@ -8,4 +8,6 @@ To run the code:
 Compile using `rustc` and 'cargo build' and then call the executable along with whatever argument is needed. Alternatively, `cargo run` should work but not as well. 
 
 ### Adding tasks
-You can add tasks by calling `./main [tasks]`. You can have as many *space-separated* tasks as needed, and each will be added separately. For example, `./main 
+You can add tasks by calling `./main [tasks]`. You can have as many *space-separated* tasks as needed, and each will be added separately. For example, `./main task1 task2` will be added separately. If you want longer tasks, you can surround the task in quotation marks; for example `./main add "Take out trash"` would be added as "Take out trash", and not separate entries. 
+
+### Removing tasks
