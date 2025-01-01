@@ -15,10 +15,11 @@ fn main() {
     match command.as_str() {
         "add" => {
             if args.len() < 3 {
-                println!("Usage: ./main add <task1> <task2> ...");
+                println!("Usage: ./main add <task1>,<task2>,...");
                 return;
             }
-            let tasks = &args[2..];
+            let tasks_string = &args[2];
+            let tasks: Vec<&str> = tasks_string.split(',').map(|s| s.trim()).collect();
             let mut num = get_task_count();
             for task in tasks {
                 add(task, &mut num);
@@ -84,7 +85,7 @@ fn add(new_task: &str, num: &mut i32) {
         .expect("Unable to open file");
 
     let mut writer = BufWriter::new(&mut file);
-    writeln!(writer, "{}", format!("{}: {}", *num, new_task)).expect("Unable to write to file");
+    writeln!(writer, "{}: {}", *num, new_task).expect("Unable to write to file");
     *num += 1;
 }
 
