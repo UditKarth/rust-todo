@@ -15,11 +15,10 @@ fn main() {
     match command.as_str() {
         "add" => {
             if args.len() < 3 {
-                println!("Usage: ./main add <task1>,<task2>,...");
+                println!("Usage: ./main add <task1> <task2> ...");
                 return;
             }
-            let tasks_string = &args[2];
-            let tasks: Vec<&str> = tasks_string.split(',').map(|s| s.trim()).collect();
+            let tasks = &args[2..];
             let mut num = get_task_count();
             for task in tasks {
                 add(task, &mut num);
@@ -40,7 +39,7 @@ fn main() {
 }
 
 fn get_task_count() -> i32 {
-    let file = match File::open("todo.txt") {
+    let file = match File::open(".todo.txt") {
         Ok(file) => file,
         Err(_) => return 1,
     };
@@ -60,7 +59,7 @@ fn get_task_count() -> i32 {
 }
 
 fn list() {
-    let file = match File::open("todo.txt") {
+    let file = match File::open(".todo.txt") {
         Ok(file) => file,
         Err(_) => {
             println!("No tasks found.");
@@ -81,17 +80,17 @@ fn add(new_task: &str, num: &mut i32) {
     let mut file = OpenOptions::new()
         .append(true)
         .create(true)
-        .open("todo.txt")
+        .open(".todo.txt")
         .expect("Unable to open file");
 
     let mut writer = BufWriter::new(&mut file);
-    writeln!(writer, "{}: {}", *num, new_task).expect("Unable to write to file");
+    writeln!(writer, "{}", format!("{}: {}", *num, new_task)).expect("Unable to write to file");
     *num += 1;
 }
 
 fn remove(remove_options: &[String]) { 
     let mut lines: Vec<String> = Vec::new();
-    let file = match File::open("todo.txt") {
+    let file = match File::open(".todo.txt") {
         Ok(file) => file,
         Err(_) => {
             println!("No tasks found to remove.");
@@ -145,7 +144,7 @@ fn remove(remove_options: &[String]) {
 }
 
 fn clear_list() {
-    File::create("todo.txt").expect("Unable to create file");
+    File::create(".todo.txt").expect("Unable to create file");
     println!("To-Do list cleared.");
 }
 
